@@ -1,23 +1,30 @@
-//
-//  HaloTests.swift
-//  Halo
-//
-//  Created by Vrisch on {TODAY}.
-//  Copyright © 2017 Halo. All rights reserved.
-//
-
 import Foundation
 import XCTest
 import Halo
 
+extension Tag {
+    static let test = Tag(rawValue: 100)
+}
+
 class HaloTests: XCTestCase {
     func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        //// XCTAssertEqual(Halo().text, "Hello, World!")
+        let stackView = UIStackView()
+        XCTAssertNotNil(stackView.add(element: .button(tag: .test, style: .none, title: "Test")))
+        XCTAssertEqual(stackView.arrangedSubviews.count, 1)
     }
-    
+
+    func testGet() {
+        let stackView = UIStackView()
+        stackView.add(element: .button(tag: .test, style: .none, title: "Test"))
+        #if os(OSX)
+            XCTAssertNotNil(stackView.get(NSButton.self, tag: .test))
+        #else
+            XCTAssertNotNil(stackView.get(UIButton.self, tag: .test))
+        #endif
+    }
+
     static var allTests = [
         ("testExample", testExample),
+        ("testGet", testGet),
     ]
 }
