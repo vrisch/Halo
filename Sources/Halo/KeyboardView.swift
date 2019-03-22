@@ -3,7 +3,7 @@
     
     public extension Element {
         
-        static public func keyboardView(tag: Tag = .none, style: Style = .none) -> Element {
+        static func keyboardView(tag: Tag = .none, style: Style = .none) -> Element {
             return Element {
                 let keyboardView = KeyboardView()
                 return style.apply(tag: tag, view: keyboardView)

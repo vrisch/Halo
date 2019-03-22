@@ -3,7 +3,7 @@
     
     public extension Element {
         
-        static public func statusView(tag: Tag = .none, style: Style = .none) -> Element {
+        static func statusView(tag: Tag = .none, style: Style = .none) -> Element {
             return Element {
                 let statusView = StatusView()
                 return style.apply(tag: tag, view: statusView)

@@ -60,28 +60,28 @@ public indirect enum Layout {
 }
 
 public extension Layout {
-    public static var wrap: Layout {
+    static var wrap: Layout {
         return .break(next: .empty)
     }
-    public static func intrinsic(_ view: UIView) -> Layout {
+    static func intrinsic(_ view: UIView) -> Layout {
         return .element(with: .intrinsic(view), next: .empty)
     }
-    public static func autolayout(_ direction: Direction, _ view: UIView) -> Layout {
+    static func autolayout(_ direction: Direction, _ view: UIView) -> Layout {
         return .element(with: .autolayout(direction, view), next: .empty)
     }
-    public static func fits(_ direction: Direction, _ view: UIView) -> Layout {
+    static func fits(_ direction: Direction, _ view: UIView) -> Layout {
         return .element(with: .fits(direction, view), next: .empty)
     }
-    public static func fix(_ size: CGSize, _ view: UIView) -> Layout {
+    static func fix(_ size: CGSize, _ view: UIView) -> Layout {
         return .element(with: .fix(size, view), next: .empty)
     }
-    public static func space(_ size: CGSize) -> Layout {
+    static func space(_ size: CGSize) -> Layout {
         return .element(with: .space(size), next: .empty)
     }
 }
 
 public extension Layout {
-    public func append(_ layout: Layout) -> Layout {
+    func append(_ layout: Layout) -> Layout {
         switch self {
         case let .element(sizing, next):
             return .element(with: sizing, next: next.append(layout))
@@ -94,13 +94,13 @@ public extension Layout {
         }
     }
     
-    public static func flow(_ layouts: Layout...) -> Layout {
+    static func flow(_ layouts: Layout...) -> Layout {
         guard var result = layouts.last else { return .empty }
         layouts.dropLast().reversed().forEach { result = $0.append(result) }
         return result
     }
     
-    public static func stack(_ layouts: Layout...) -> Layout {
+    static func stack(_ layouts: Layout...) -> Layout {
         guard var result = layouts.first else { return .empty }
         layouts.dropFirst().forEach { result = result.append(.wrap).append($0) }
         return result
@@ -108,7 +108,7 @@ public extension Layout {
 }
 
 public extension Layout {
-    public enum Result {
+    enum Result {
         case overflows
         case fits(views: [UIView], frame: CGRect)
         
@@ -126,7 +126,7 @@ public extension Layout {
         }
     }
     
-    public func compute(origin: CGPoint, direction: Direction) -> Result {
+    func compute(origin: CGPoint, direction: Direction) -> Result {
         let original = Computation(origin: origin, direction: direction, frame: .zero, views: [])
         return compute(original: original, current: original)
     }

@@ -2,7 +2,7 @@
 import UIKit
 
 public extension Element {   
-    static public func stackView(tag: Tag = .none, style: Style = .none, axis: NSLayoutConstraint.Axis = .vertical, distribution: UIStackView.Distribution = .fill, spacing: CGFloat = 8, elements: [Element] = []) -> Element {
+    static func stackView(tag: Tag = .none, style: Style = .none, axis: NSLayoutConstraint.Axis = .vertical, distribution: UIStackView.Distribution = .fill, spacing: CGFloat = 8, elements: [Element] = []) -> Element {
         return Element {
             let stackView = UIStackView()
             stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -21,7 +21,7 @@ public extension Element {
 
 public extension UIStackView {
     
-    public convenience init(superview: UIView, axis: NSLayoutConstraint.Axis = .vertical, insets: UIEdgeInsets = .zero) {
+    convenience init(superview: UIView, axis: NSLayoutConstraint.Axis = .vertical, insets: UIEdgeInsets = .zero) {
         self.init(frame: .zero)
         
         self.spacing = 8 //UIStackView.spacingUseSystem
@@ -35,47 +35,47 @@ public extension UIStackView {
             trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: -insets.right)
             ])
     }
-
-    public func add(element: Element) {
+    
+    func add(element: Element) {
         addArrangedSubview(element.create())
     }
     
-    public func add(elements: [Element]) {
+    func add(elements: [Element]) {
         elements.forEach { add(element: $0) }
     }
     
-    public func insert(element: Element, at tag: Tag) {
+    func insert(element: Element, at tag: Tag) {
         let pair = arrangedSubviews.enumerated().first { $0.1.tag == tag.rawValue }
         if let (stackIndex, _) = pair {
             insertArrangedSubview(element.create(), at: stackIndex)
         }
     }
     
-    public func replaceElement(at tag: Tag, with element: Element) {
+    func replaceElement(at tag: Tag, with element: Element) {
         guard let view = get(UIView.self, tag: tag) else { return }
         insert(element: element, at: tag)
         removeArrangedSubview(view)
     }
     
-    public func remove(tag: Tag) {
+    func remove(tag: Tag) {
         guard let view = get(UIView.self, tag: tag) else { return }
         removeArrangedSubview(view)
     }
     
-    public func removeAll() {
+    func removeAll() {
         arrangedSubviews.forEach { $0.removeFromSuperview() }
     }
-
-    public func get<T>(_ type: T.Type, tag: Tag) -> T? where T : UIView {
+    
+    func get<T>(_ type: T.Type, tag: Tag) -> T? where T : UIView {
         return viewWithTag(tag.rawValue) as? T
     }
-
-    public func show(tag: Tag) {
+    
+    func show(tag: Tag) {
         guard let view = get(UIView.self, tag: tag), view.isHidden == true else { return }
         view.isHidden = false
     }
     
-    public func hide(tag: Tag) {
+    func hide(tag: Tag) {
         guard let view = get(UIView.self, tag: tag), view.isHidden == false else { return }
         view.isHidden = true
     }
@@ -91,7 +91,7 @@ public extension UIStackView {
 
 public extension Element {
     
-    public enum Position {
+    enum Position {
         case fill
         case centerX
         case centerY
@@ -135,7 +135,7 @@ public extension Element {
         }
     }
     
-    static public func custom<T: UIView>(_ type: T.Type, tag: Tag, style: Style, insets: UIEdgeInsets, position: Position, elements: [Element] = []) -> Element {
+    static func custom<T: UIView>(_ type: T.Type, tag: Tag, style: Style, insets: UIEdgeInsets, position: Position, elements: [Element] = []) -> Element {
         return Element {
             let view = T()
             view.translatesAutoresizingMaskIntoConstraints = false
@@ -156,8 +156,8 @@ public extension Element {
 }
 
 public extension Element {
-
-    static public func label(tag: Tag = .none, style: Style = .none, text: String) -> Element {
+    
+    static func label(tag: Tag = .none, style: Style = .none, text: String) -> Element {
         return Element {
             let label = UILabel()
             label.text = text
@@ -171,7 +171,7 @@ public extension Element {
         }
     }
     
-    static public func textField(tag: Tag = .none, style: Style = .none, placeholder: String? = nil, text: String? = nil) -> Element {
+    static func textField(tag: Tag = .none, style: Style = .none, placeholder: String? = nil, text: String? = nil) -> Element {
         return Element {
             let textField = UITextField()
             textField.translatesAutoresizingMaskIntoConstraints = false
@@ -185,7 +185,7 @@ public extension Element {
         }
     }
     
-    static public func textView(tag: Tag = .none, style: Style = .none, text: String? = nil) -> Element {
+    static func textView(tag: Tag = .none, style: Style = .none, text: String? = nil) -> Element {
         return Element {
             let textView = UITextView()
             textView.translatesAutoresizingMaskIntoConstraints = false
@@ -202,7 +202,7 @@ public extension Element {
 
 public extension Element {
     
-    static public func button(tag: Tag = .none, style: Style = .none, title: String, image: UIImage? = nil) -> Element {
+    static func button(tag: Tag = .none, style: Style = .none, title: String, image: UIImage? = nil) -> Element {
         return Element {
             let button = UIButton()
             button.translatesAutoresizingMaskIntoConstraints = false
@@ -218,7 +218,7 @@ public extension Element {
         }
     }
     
-    static public func segmentedControl(tag: Tag = .none, style: Style = .none, titles: [String] = []) -> Element {
+    static func segmentedControl(tag: Tag = .none, style: Style = .none, titles: [String] = []) -> Element {
         return Element {
             let segmentedControl = UISegmentedControl()
             segmentedControl.translatesAutoresizingMaskIntoConstraints = false
@@ -231,7 +231,7 @@ public extension Element {
     }
     
     #if os(iOS)
-    static public func slider(tag: Tag = .none, style: Style = .none) -> Element {
+    static func slider(tag: Tag = .none, style: Style = .none) -> Element {
         return Element {
             let slider = UISlider()
             slider.translatesAutoresizingMaskIntoConstraints = false
@@ -239,7 +239,7 @@ public extension Element {
         }
     }
     
-    static public func `switch`(tag: Tag = .none, style: Style = .none) -> Element {
+    static func `switch`(tag: Tag = .none, style: Style = .none) -> Element {
         return Element {
             let `switch` = UISwitch()
             `switch`.translatesAutoresizingMaskIntoConstraints = false
@@ -251,7 +251,7 @@ public extension Element {
 
 public extension Element {
     
-    static public func viewController(tag: Tag = .none, style: Style = .none, viewController: UIViewController, parent: UIViewController) -> Element {
+    static func viewController(tag: Tag = .none, style: Style = .none, viewController: UIViewController, parent: UIViewController) -> Element {
         return Element {
             parent.addChild(viewController)
             viewController.didMove(toParent: parent)
@@ -262,9 +262,9 @@ public extension Element {
     }
 }
 
-extension Element {
+public extension Element {
     
-    static public func collectionViewCell<T: UICollectionViewCell>(_ type: T.Type, tag: Tag = .none, style: Style = .none) -> Element {
+    static func collectionViewCell<T: UICollectionViewCell>(_ type: T.Type, tag: Tag = .none, style: Style = .none) -> Element {
         return Element {
             let collectionViewCell = T()
             collectionViewCell.translatesAutoresizingMaskIntoConstraints = false
@@ -275,7 +275,7 @@ extension Element {
 
 public extension Element {
     
-    static public func imageView(tag: Tag = .none, style: Style = .none, image: UIImage? = nil) -> Element {
+    static func imageView(tag: Tag = .none, style: Style = .none, image: UIImage? = nil) -> Element {
         return Element {
             let imageView = UIImageView(image: image)
             imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -283,7 +283,7 @@ public extension Element {
         }
     }
     
-    static public func activityIndicatorView(tag: Tag = .none, style: Style = .none) -> Element {
+    static func activityIndicatorView(tag: Tag = .none, style: Style = .none) -> Element {
         return Element {
             let activityIndicatorView = UIActivityIndicatorView()
             activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
@@ -295,15 +295,15 @@ public extension Element {
 
 public extension Element {
     
-    static public func view(tag: Tag = .none, style: Style = .none, insets: UIEdgeInsets = .zero, position: Position = .fill, element: Element) -> Element {
+    static func view(tag: Tag = .none, style: Style = .none, insets: UIEdgeInsets = .zero, position: Position = .fill, element: Element) -> Element {
         return .custom(UIView.self, tag: tag, style: style, insets: insets, position: position, elements: [element])
     }
     
-    static public func view(tag: Tag = .none, style: Style = .none, insets: UIEdgeInsets = .zero, position: Position = .fill, elements: [Element] = []) -> Element {
+    static func view(tag: Tag = .none, style: Style = .none, insets: UIEdgeInsets = .zero, position: Position = .fill, elements: [Element] = []) -> Element {
         return .custom(UIView.self, tag: tag, style: style, insets: insets, position: position, elements: elements)
     }
     
-    static public func control(tag: Tag = .none, style: Style = .none, insets: UIEdgeInsets = .zero, position: Position = .fill, elements: [Element] = []) -> Element {
+    static func control(tag: Tag = .none, style: Style = .none, insets: UIEdgeInsets = .zero, position: Position = .fill, elements: [Element] = []) -> Element {
         return .custom(UIControl.self, tag: tag, style: style, insets: insets, position: position, elements: elements)
     }
 }
