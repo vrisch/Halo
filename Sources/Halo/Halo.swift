@@ -15,18 +15,17 @@ public struct Tag: RawRepresentable, Equatable {
 }
 
 public struct Style {
+    public static let none = Style(for: UIView.self) { _ in }
 
-    public static let none = Style { _ in }
-
-    public init<T: UIView>(configure: @escaping (T) -> Void) {
+    public init<T: UIView>(for type: T.Type, perform: @escaping (T) -> Void) {
         self.configure = {
             guard let view = $0 as? T else { return }
-            configure(view)
+            perform(view)
         }
     }
-    
+
     public static func concat(_ styles: Style ...) -> Style {
-        return Style { view in
+        return Style(for: UIView.self) { view in
             styles.forEach { $0.configure(view) }
         }
     }
