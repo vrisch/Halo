@@ -2,7 +2,7 @@
 import UIKit
 
 public extension Element {   
-    static func stackView(tag: Tag = .none, style: Style = .none, axis: NSLayoutConstraint.Axis = .vertical, distribution: UIStackView.Distribution = .fill, spacing: CGFloat = 8, elements: [Element] = []) -> Element {
+    static func stackView(tag: Tag = .none, style: Style = .none, axis: NSLayoutConstraint.Axis = .vertical, distribution: UIStackView.Distribution = .fill, spacing: CGFloat = 8, layoutMargins: UIEdgeInsets = .zero, elements: [Element] = []) -> Element {
         return Element {
             let stackView = UIStackView()
             stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -13,6 +13,8 @@ public extension Element {
             stackView.axis = axis
             stackView.distribution = distribution
             stackView.spacing = spacing
+            stackView.layoutMargins = layoutMargins
+            stackView.isLayoutMarginsRelativeArrangement = true
             stackView.add(elements: elements)
             return style.apply(tag: tag, view: stackView)
         }
@@ -289,6 +291,20 @@ public extension Element {
             activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
             activityIndicatorView.hidesWhenStopped = true
             return style.apply(tag: tag, view: activityIndicatorView)
+        }
+    }
+
+    static func pickerView(tag: Tag = .none, style: Style = .none, source: UIPickerViewDelegate & UIPickerViewDataSource) -> Element {
+        return Element {
+            let pickerView = UIPickerView()
+            pickerView.translatesAutoresizingMaskIntoConstraints = false
+            pickerView.setContentHuggingPriority(.required, for: .horizontal)
+            pickerView.setContentHuggingPriority(.required, for: .vertical)
+            pickerView.setContentCompressionResistancePriority(.required, for: .horizontal)
+            pickerView.setContentCompressionResistancePriority(.required, for: .vertical)
+            pickerView.delegate = source
+            pickerView.dataSource = source
+            return style.apply(tag: tag, view: pickerView)
         }
     }
 }
