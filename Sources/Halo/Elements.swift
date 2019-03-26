@@ -1,8 +1,8 @@
 #if canImport(UIKit)
 import UIKit
 
-public extension Element {   
-    static func stackView(tag: Tag = .none, style: Style = .none, axis: NSLayoutConstraint.Axis = .vertical, distribution: UIStackView.Distribution = .fill, spacing: CGFloat = 8, layoutMargins: UIEdgeInsets = .zero, elements: [Element] = []) -> Element {
+public extension Element {
+    static func stackView(tag: Tag = .none, style: Style = .none, axis: NSLayoutConstraint.Axis = .vertical, distribution: UIStackView.Distribution = .fill, alignment: UIStackView.Alignment = .fill, spacing: CGFloat = 8, layoutMargins: UIEdgeInsets = .zero, elements: [Element] = []) -> Element {
         return Element {
             let stackView = UIStackView()
             stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -12,6 +12,7 @@ public extension Element {
             stackView.setContentCompressionResistancePriority(.required, for: .vertical)
             stackView.axis = axis
             stackView.distribution = distribution
+            stackView.alignment = alignment
             stackView.spacing = spacing
             stackView.layoutMargins = layoutMargins
             stackView.isLayoutMarginsRelativeArrangement = true
